@@ -5,13 +5,9 @@
 //  Product:
 //      MazeRunner
 //
-//  Interface Header:
-//
 //
 //  Authors:
 //      Ian Heaton
-//
-//  Copyright Notice:
 //
 //==================================================================================================
 //
@@ -56,12 +52,15 @@ public:
     using NeighborList = std::vector<std::reference_wrapper<QGraphicsCellWidget>>;
 
 
-    QGraphicsCellWidget(unsigned int row, unsigned int column);
+    /*QGraphicsCellWidget();
+    QGraphicsCellWidget(unsigned int row, unsigned int column);*/
+
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
 
     QColor fillColor() const;
     unsigned int Row() const;
     unsigned int Column() const;
+
 
     void setFillColor(QColor color);
     QGraphicsCellWidget& LinkCell(QGraphicsCellWidget& vCell, bool IsBidirectional = true);

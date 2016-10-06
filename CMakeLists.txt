@@ -3,12 +3,13 @@ cmake_minimum_required (VERSION 2.8.12)
 project(MazeRunner)
 
 find_package(Qt5Widgets)
+find_package(Boost)
 
 set (CMAKE_CXX_STANDARD 14)
 
 set (MyProjectLib_src ${PROJECT_SOURCE_DIR}/source/mainwindow.cpp
 	                  ${PROJECT_SOURCE_DIR}/source/qgraphics_cellwidget.cpp
-	                  ${PROJECT_SOURCE_DIR}/source/main.cpp)
+	                  )
 
 set (MyProjectLib_hdr ${PROJECT_SOURCE_DIR}/include/mainwindow.hpp
 	                  ${PROJECT_SOURCE_DIR}/include/qgraphics_cellwidget.hpp)
@@ -16,7 +17,8 @@ set (MyProjectLib_hdr ${PROJECT_SOURCE_DIR}/include/mainwindow.hpp
 
 #set (MyProjectLib_ui  ${PROJECT_SOURCE_DIR}/forms/main_window.ui)
 
-set (MyProjectBin_src ${PROJECT_SOURCE_DIR}/source/main.cpp)
+set (MyProjectBin_src ${PROJECT_SOURCE_DIR}/source/main.cpp
+                      ${PROJECT_SOURCE_DIR}/source/maze_grid.cpp)
 
 qt5_wrap_cpp (MyProjectLib_hdr_moc ${MyProjectLib_hdr})
 #qt5_wrap_ui (MyProjectLib_ui_moc  ${MyProjectLib_ui})

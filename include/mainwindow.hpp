@@ -18,8 +18,7 @@
 #ifndef MAINWINDOW_HPP_DEFINED
 #define MAINWINDOW_HPP_DEFINED
 
-#include <QWidget>
-#include <vector>
+#include "mz_includes.h"
 
 
 class QAction;
