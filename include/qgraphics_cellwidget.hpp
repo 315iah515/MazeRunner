@@ -14,14 +14,14 @@
 #ifndef QGRAPGICS_CELLWIDGET_HPP_DEFINED
 #define QGRAPGICS_CELLWIDGET_HPP_DEFINED
 
-#include <vector>
-#include <functional>
+#include "mz_includes.h"
 
 #include <QGraphicsWidget>
 
 enum class CellLabel
 {
-    NORTH = 0,
+    UNKNOWN = 0,
+    NORTH,
     SOUTH,
     EAST,
     WEST
@@ -49,11 +49,10 @@ class QGraphicsCellWidget : public QGraphicsWidget
 
 public:
 
-    using NeighborList = std::vector<std::reference_wrapper<QGraphicsCellWidget>>;
+    using NeighborList = std::vector<QGraphicsCellWidget*>;
 
 
-    /*QGraphicsCellWidget();
-    QGraphicsCellWidget(unsigned int row, unsigned int column);*/
+    QGraphicsCellWidget(unsigned int row, unsigned int column);
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
 
@@ -63,21 +62,19 @@ public:
 
 
     void setFillColor(QColor color);
-    QGraphicsCellWidget& LinkCell(QGraphicsCellWidget& vCell, bool IsBidirectional = true);
-    QGraphicsCellWidget& UnLinkCell(QGraphicsCellWidget& vCell, bool IsBidirectional = true);
+    void LinkCell(QGraphicsCellWidget* vpCell, bool IsBidirectional = true);
+    void UnLinkCell(QGraphicsCellWidget* vpCell, bool IsBidirectional = true);
 
     NeighborList Neighbors();
 
 
 private:
-    using AdjacentCells = std::vector<QGraphicsCellWidget>;
+    using AdjacentCells = std::vector<QGraphicsCellWidget*>;
     unsigned int       mRow;
     unsigned int       mColumn;
-    QColor mFillColor;
+    QColor             mFillColor;
     AdjacentCells      mLinked;
     CellLabel          mLabel;
-
-
 
 };
 

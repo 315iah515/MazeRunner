@@ -18,6 +18,8 @@
 #include <cstdint>
 #include <vector>
 #include <memory>
+#include <algorithm>
+#include <functional>
 
 #include <boost/multi_array.hpp>
 

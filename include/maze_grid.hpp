@@ -35,18 +35,19 @@
 class MazeGrid
 {
 public:
-    MazeGrid();
     MazeGrid(std::uint16_t vRows, std::uint16_t vColumns);
 
 private:
 
-    using ArrayType =  boost::multi_array<QGraphicsCellWidget, 2>;
+    using CellPtr = QGraphicsCellWidget*;
+    using ArrayType =  boost::multi_array<CellPtr, 2>;
     using Index = ArrayType::index;
-    using MatrixPtr = std::unique_ptr<ArrayType>;
 
-    MatrixPtr     mpData;
+    ArrayType     mData;
     std::uint16_t mRows;
     std::uint16_t mColumns;
+
+    void Clear();
 };
 
 #endif //- MAZE_GRID_HPP_DEFINED
