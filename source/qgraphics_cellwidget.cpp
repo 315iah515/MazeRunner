@@ -36,8 +36,7 @@
 QGraphicsCellWidget::QGraphicsCellWidget(unsigned int row, unsigned int column)
     :mRow(row),
      mColumn(column),
-     mFillColor(Qt::white),
-     mLabel(CellLabel::UNKNOWN)
+     mFillColor(Qt::white)
 
 {
 
@@ -75,7 +74,41 @@ QGraphicsCellWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *, 
 {
     QBrush brush = painter->brush();
     painter->setBrush(mFillColor);
-    painter->drawRect(rect());
+
+    if (mLinked.empty())
+    {
+        painter->drawRect(rect());
+    }
+    else if (mLinked.size() == 4)
+    {
+        painter->setPen(Qt::NoPen);
+        painter->drawRect(rect());
+
+    }
+    else
+    {
+        if (std::count(mReachableCells.begin(), mReachableCells.end(), CellLabel::NORTH) == 0)
+        {
+            painter->drawLine(rect().topLeft(), rect().topRight());
+        }
+
+        if (std::count(mReachableCells.begin(), mReachableCells.end(), CellLabel::EAST) == 0)
+        {
+            painter->drawLine(rect().topRight(), rect().bottomRight());
+        }
+
+        if (std::count(mReachableCells.begin(), mReachableCells.end(), CellLabel::SOUTH) == 0)
+        {
+            painter->drawLine(rect().bottomRight(), rect().bottomLeft());
+        }
+
+        if (std::count(mReachableCells.begin(), mReachableCells.end(), CellLabel::WEST) == 0)
+        {
+            painter->drawLine(rect().bottomLeft(), rect().topLeft());
+        }
+
+    }
+
     painter->setBrush(brush);
 }
 

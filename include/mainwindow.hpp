@@ -63,7 +63,7 @@ private slots:
 
 private:
 
-    QGraphicsView        *mpGraphicsView;
+    QGraphicsView         *mpGraphicsView;
     QGraphicsScene        *mpScene;
     QAction               *mpExitAct;
 

@@ -51,15 +51,15 @@ public:
 
     using NeighborList = std::vector<QGraphicsCellWidget*>;
 
-
     QGraphicsCellWidget(unsigned int row, unsigned int column);
-
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *) Q_DECL_OVERRIDE;
 
     QColor fillColor() const;
     unsigned int Row() const;
     unsigned int Column() const;
 
+
+    void AssignNeighbor(QGraphicsCellWidget* vpCell, CellLabel vLabel);
 
     void setFillColor(QColor color);
     void LinkCell(QGraphicsCellWidget* vpCell, bool IsBidirectional = true);
@@ -70,11 +70,12 @@ public:
 
 private:
     using AdjacentCells = std::vector<QGraphicsCellWidget*>;
+    using AdjacentCellLables = std::vector<CellLabel>;
     unsigned int       mRow;
     unsigned int       mColumn;
     QColor             mFillColor;
     AdjacentCells      mLinked;
-    CellLabel          mLabel;
+    AdjacentCellLables mReachableCells;
 
 };
 
@@ -102,5 +103,15 @@ QGraphicsCellWidget::setFillColor(QColor color)
     mFillColor = color;
 }
 
+void inline
+QGraphicsCellWidget::AssignNeighbor(QGraphicsCellWidget* vpCell, CellLabel vLabel)
+{
+    if (vpCell)
+    {
+        mLinked.push_back(vpCell);
+        mReachableCells.push_back(vLabel);
+    }
+
+}
 
 #endif //- QGRAPGICS_CELLWIDGET_HPP_DEFINED

@@ -20,6 +20,7 @@
 #include <memory>
 #include <algorithm>
 #include <functional>
+#include <iostream>
 
 #include <boost/multi_array.hpp>
 
