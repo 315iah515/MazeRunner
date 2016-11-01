@@ -19,6 +19,7 @@
 #define MAINWINDOW_HPP_DEFINED
 
 #include "mz_includes.h"
+#include "maze_grid.hpp"
 
 
 class QAction;
@@ -58,8 +59,6 @@ protected:
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     //void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
-private slots:
-
 
 private:
 
@@ -69,6 +68,8 @@ private:
 
     QGraphicsGridLayout   *mpContainerLayout;
     QGraphicsLinearLayout *mpTopLevelLayout;
+
+    MazeGrid               mGrid;
 
 
 

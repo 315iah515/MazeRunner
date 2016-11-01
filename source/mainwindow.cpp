@@ -22,7 +22,8 @@
 namespace {
 
     unsigned int sMargin = 30;
-    unsigned int sViewHeight = 400;
+    unsigned int sHeight = 400;
+    unsigned int sWidth = 400;
 
 }
 //--------------------------------------------------------------------------------------------------
@@ -37,12 +38,13 @@ namespace {
 //--------------------------------------------------------------------------------------------------
 //
 MainWindow::MainWindow(QWidget *parent) :
-    QWidget(parent, Qt::FramelessWindowHint),
+    QWidget(parent/*, Qt::FramelessWindowHint*/),
     mpGraphicsView(nullptr),
     mpScene(nullptr),
     mpExitAct(nullptr),
     mpContainerLayout(nullptr),
-    mpTopLevelLayout(nullptr)
+    mpTopLevelLayout(nullptr),
+    mGrid(4, 4)
 
 {
 
@@ -92,7 +94,7 @@ MainWindow::~MainWindow()
 QSize
 MainWindow::sizeHint() const
 {
-    return QSize(500, 500);
+    return QSize(sWidth, sHeight);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -189,14 +191,39 @@ void
 MainWindow::CreateSceneLayout()
 {
 
+    mpContainerLayout = new QGraphicsGridLayout;
+
+    mpContainerLayout->setVerticalSpacing(0.0);
+    mpContainerLayout->setHorizontalSpacing(0.0);
+    mGrid.ConstructCells();
+
+    // row , column
+
+    for (int i = 0; i < mGrid.Rows(); ++i)
+    {
+        for (int j = 0; j < mGrid.Columns(); ++j)
+        {
+            mpContainerLayout->addItem(mGrid.RetrieveCell(i, j), i, j);
+        }
+    }
+
+    mpTopLevelLayout = new QGraphicsLinearLayout(Qt::Vertical);
+    mpTopLevelLayout->addItem(mpContainerLayout);
+    mpTopLevelLayout->setSpacing(sMargin);
+    mpTopLevelLayout->setContentsMargins(30, 40, 30, 30);
+
     QGraphicsWidget *vpWidget = new QGraphicsWidget;
     vpWidget->setLayout(mpTopLevelLayout);
 
     int width = qRound(vpWidget->preferredWidth());
-    int height = sViewHeight + (2 * sMargin);
+    int height = qRound(vpWidget->preferredHeight());
+    //int height = sViewHeight + (2 * sMargin);
     setMinimumSize(width, height);
 
-    mpScene = new QGraphicsScene(0, 0, 400, 400);
+    sWidth = width;
+    sHeight = height;
+
+    mpScene = new QGraphicsScene(this);
     mpScene->setSceneRect(0, 0, width, height);
     mpScene->setBackgroundBrush(QColor(134, 163, 249));
     mpScene->addItem(vpWidget);

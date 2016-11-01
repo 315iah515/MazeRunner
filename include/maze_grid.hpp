@@ -37,6 +37,7 @@ class MazeGrid
 {
 public:
     using CCellPtr = QGraphicsCellWidget const*;
+    using CellPtr   = QGraphicsCellWidget*;
 
     MazeGrid(std::uint16_t vRows, std::uint16_t vColumns);
     ~MazeGrid();
@@ -45,12 +46,12 @@ public:
     bool ClearAndConstructNewDiem(std::uint16_t vRows, std::uint16_t vColumns);
 
 
-    CCellPtr      RetrieveCell(std::uint16_t vRow, std::uint16_t vColumn) const;
+    CellPtr      RetrieveCell(std::uint16_t vRow, std::uint16_t vColumn);
     std::uint16_t Rows() const;
     std::uint16_t Columns() const;
 
 private:
-    using CellPtr   = QGraphicsCellWidget*;
+
     using ArrayType =  boost::multi_array<CellPtr, 2>;
     using Index     = ArrayType::index;
 

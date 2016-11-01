@@ -140,8 +140,8 @@ MazeGrid::ClearAndConstructNewDiem(uint16_t vRows, uint16_t vColumns)
 //
 //--------------------------------------------------------------------------------------------------
 //
-MazeGrid::CCellPtr
-MazeGrid::RetrieveCell(uint16_t vRow, uint16_t vColumn) const
+MazeGrid::CellPtr
+MazeGrid::RetrieveCell(uint16_t vRow, uint16_t vColumn)
 {
     return mData[vRow][vColumn];
 }
