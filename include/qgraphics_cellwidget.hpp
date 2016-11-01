@@ -57,6 +57,7 @@ public:
     QColor fillColor() const;
     unsigned int Row() const;
     unsigned int Column() const;
+    bool IsLinkedCell(QGraphicsCellWidget* const vpCell) const;
 
 
     void AssignNeighbor(QGraphicsCellWidget* vpCell, CellLabel vLabel);

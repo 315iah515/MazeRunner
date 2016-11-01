@@ -42,13 +42,14 @@ public:
     MazeGrid(std::uint16_t vRows, std::uint16_t vColumns);
     ~MazeGrid();
 
-    bool ConstructCells();
-    bool ClearAndConstructNewDiem(std::uint16_t vRows, std::uint16_t vColumns);
+    bool     ConstructCells();
+    bool     ClearAndConstructNewDiem(std::uint16_t vRows, std::uint16_t vColumns);
+    CellPtr  RetrieveCell(std::uint16_t vRow, std::uint16_t vColumn);
+    CellPtr  RandomCell();
 
-
-    CellPtr      RetrieveCell(std::uint16_t vRow, std::uint16_t vColumn);
     std::uint16_t Rows() const;
     std::uint16_t Columns() const;
+    int           Size() const;
 
 private:
 
@@ -58,6 +59,9 @@ private:
     ArrayType     mData;
     std::uint16_t mRows;
     std::uint16_t mColumns;
+    std::random_device mRmd;
+    std::mt19937  mMt;
+    std::uniform_real_distribution<double> mDist;
 
     void Clear();
     void ConfigureCellNeighbors();
@@ -74,6 +78,12 @@ std::uint16_t inline
 MazeGrid::Columns() const
 {
     return mColumns;
+}
+
+int inline
+MazeGrid::Size() const
+{
+    return mRows * mColumns;
 }
 
 #endif //- MAZE_GRID_HPP_DEFINED

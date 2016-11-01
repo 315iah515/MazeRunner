@@ -114,6 +114,37 @@ QGraphicsCellWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *, 
 
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
+//      IsLinkedCell()
+//
+//  Summary:
+//      Determines if parameter is connected to cell via a passage. Included in list of
+//      neighboring cells.
+//
+//  Parameters:
+//      vpCell -
+//          [in, out] Immutable pointer to maze cell
+//
+//--------------------------------------------------------------------------------------------------
+//
+bool
+QGraphicsCellWidget::IsLinkedCell(QGraphicsCellWidget *const vpCell) const
+{
+    bool result = false;
+
+    for (auto vp : mLinked)
+    {
+        if (vp == vpCell)
+        {
+            result = true;
+            break;
+        }
+    }
+
+    return result;
+}
+
+//--------------------------------------------------------------------------------------------------
+//  Member Function:
 //      LinkCell()
 //
 //  Summary:

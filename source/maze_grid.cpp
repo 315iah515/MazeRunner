@@ -33,7 +33,10 @@
 MazeGrid::MazeGrid(uint16_t vRows, uint16_t vColumns)
     : mRows(vRows),
       mColumns(vColumns),
-      mData(boost::extents[vRows][vColumns])
+      mData(boost::extents[vRows][vColumns]),
+      mMt(std::random_device()()),
+      mDist(0, vColumns)
+
 {
 
 }
@@ -92,6 +95,8 @@ MazeGrid::ConstructCells()
     }
 
 
+    //ConfigureCellNeighbors();
+
     return result;
 }
 
@@ -148,6 +153,32 @@ MazeGrid::RetrieveCell(uint16_t vRow, uint16_t vColumn)
 
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
+//      RandomCell()
+//
+//  Summary:
+//      .
+//
+//
+//  Returns:
+//      Returns an immutable pointer to a random cellwidget contained within the maze
+//
+//  Remarks:
+//      The matrix comprising the grid will not always be a square matrix therefore the row will
+//       need to have its own distribution
+//
+//--------------------------------------------------------------------------------------------------
+//
+MazeGrid::CellPtr
+MazeGrid::RandomCell()
+{
+    int vRow = mDist(mMt);
+    int vColumn = mDist(mMt);
+
+    return mData[vRow][vColumn];
+}
+
+//--------------------------------------------------------------------------------------------------
+//  Member Function:
 //      Clear()
 //
 //  Summary:
@@ -173,8 +204,10 @@ MazeGrid::Clear()
 //      ConfigureCellNeighbors()
 //
 //  Summary:
-//      Assigns each cell’s neighbor, the four adjoining cells
+//      Assigns each cell’s neighbor, the four adjoining cells.
 //
+//  Remarks:
+//     Opens all passage ways between cells, all cells have links except for edges.
 //
 //--------------------------------------------------------------------------------------------------
 //
@@ -186,10 +219,26 @@ MazeGrid::ConfigureCellNeighbors()
         for(std::uint16_t column = 0; column < mColumns; ++column)
         {
             CellPtr vPtr = mData[row][column];
-            vPtr->AssignNeighbor(mData[row - 1][column], CellLabel::NORTH);
-            vPtr->AssignNeighbor(mData[row + 1][column], CellLabel::SOUTH);
-            vPtr->AssignNeighbor(mData[row][column - 1], CellLabel::WEST);
-            vPtr->AssignNeighbor(mData[row][column + 1], CellLabel::EAST);
+
+            if ( row > 0)
+            {
+                vPtr->AssignNeighbor(mData[row - 1][column], CellLabel::NORTH);
+            }
+
+            if (row < mRows - 1)
+            {
+                vPtr->AssignNeighbor(mData[row + 1][column], CellLabel::SOUTH);
+            }
+
+            if (column > 0)
+            {
+                vPtr->AssignNeighbor(mData[row][column - 1], CellLabel::WEST);
+            }
+
+            if (column < mColumns - 1)
+            {
+                vPtr->AssignNeighbor(mData[row][column + 1], CellLabel::EAST);
+            }
         }
     }
 
