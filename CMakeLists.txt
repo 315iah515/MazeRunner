@@ -18,7 +18,9 @@ set (MyProjectLib_hdr ${PROJECT_SOURCE_DIR}/include/mainwindow.hpp
 #set (MyProjectLib_ui  ${PROJECT_SOURCE_DIR}/forms/main_window.ui)
 
 set (MyProjectBin_src ${PROJECT_SOURCE_DIR}/source/main.cpp
-                      ${PROJECT_SOURCE_DIR}/source/maze_grid.cpp)
+                      ${PROJECT_SOURCE_DIR}/source/maze_grid.cpp
+                      ${PROJECT_SOURCE_DIR}/source/maze_creation.cpp
+                      ${PROJECT_SOURCE_DIR}/source/binary_tree_alg.cpp)
 
 qt5_wrap_cpp (MyProjectLib_hdr_moc ${MyProjectLib_hdr})
 #qt5_wrap_ui (MyProjectLib_ui_moc  ${MyProjectLib_ui})

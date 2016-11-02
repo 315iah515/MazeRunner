@@ -18,6 +18,7 @@
 
 #include "mainwindow.hpp"
 #include "qgraphics_cellwidget.hpp"
+#include "maze_creation.hpp"
 
 namespace {
 
@@ -44,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mpExitAct(nullptr),
     mpContainerLayout(nullptr),
     mpTopLevelLayout(nullptr),
-    mGrid(4, 4)
+    mGrid(8, 8)
 
 {
 
@@ -195,7 +196,9 @@ MainWindow::CreateSceneLayout()
 
     mpContainerLayout->setVerticalSpacing(0.0);
     mpContainerLayout->setHorizontalSpacing(0.0);
-    mGrid.ConstructCells();
+
+    CreationAlgorithmPtr CreationPtr = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
+    CreationPtr->Build(mGrid);
 
     // row , column
 

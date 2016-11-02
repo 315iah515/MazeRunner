@@ -63,8 +63,8 @@ public:
     void AssignNeighbor(QGraphicsCellWidget* vpCell, CellLabel vLabel);
 
     void setFillColor(QColor color);
-    void LinkCell(QGraphicsCellWidget* vpCell, bool IsBidirectional = true);
-    void UnLinkCell(QGraphicsCellWidget* vpCell, bool IsBidirectional = true);
+    void LinkCell(QGraphicsCellWidget* vpCell, CellLabel vLabel, bool IsBidirectional = true);
+    void UnLinkCell(QGraphicsCellWidget* vpCell, CellLabel vLabel, bool IsBidirectional = true);
 
     NeighborList Neighbors();
 
@@ -77,6 +77,8 @@ private:
     QColor             mFillColor;
     AdjacentCells      mLinked;
     AdjacentCellLables mReachableCells;
+
+    CellLabel DetermineReverseDrc(CellLabel vLabel);
 
 };
 

@@ -44,7 +44,7 @@ QGraphicsCellWidget::QGraphicsCellWidget(unsigned int row, unsigned int column)
 
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
-//      MEMBER_FUNCTION_NAME()
+//      paint()
 //
 //  Summary:
 //      Does...
@@ -78,6 +78,7 @@ QGraphicsCellWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *, 
     if (mLinked.empty())
     {
         painter->drawRect(rect());
+        painter->setBrush(Qt::black);
     }
     else if (mLinked.size() == 4)
     {
@@ -160,15 +161,16 @@ QGraphicsCellWidget::IsLinkedCell(QGraphicsCellWidget *const vpCell) const
 //--------------------------------------------------------------------------------------------------
 //
 void
-QGraphicsCellWidget::LinkCell(QGraphicsCellWidget *vpCell, bool IsBidirectional)
+QGraphicsCellWidget::LinkCell(QGraphicsCellWidget *vpCell, CellLabel vLabel, bool IsBidirectional)
 {
     if (vpCell != nullptr)
     {
         mLinked.push_back(vpCell);
+        mReachableCells.push_back(vLabel);
+
         if (IsBidirectional)
         {
-            vpCell->LinkCell(this, false);
-
+            vpCell->LinkCell(this, DetermineReverseDrc(vLabel), false);
         }
     }
 }
@@ -190,21 +192,68 @@ QGraphicsCellWidget::LinkCell(QGraphicsCellWidget *vpCell, bool IsBidirectional)
 //--------------------------------------------------------------------------------------------------
 //
 void
-QGraphicsCellWidget::UnLinkCell(QGraphicsCellWidget *vpCell, bool IsBidirectional)
+QGraphicsCellWidget::UnLinkCell(QGraphicsCellWidget *vpCell, CellLabel vLabel, bool IsBidirectional)
 {
     if (vpCell != nullptr)
     {
         auto vItr = std::find(mLinked.begin(), mLinked.end(), vpCell);
+        auto vItr2 = std::find(mReachableCells.begin(), mReachableCells.end(), vLabel);
 
-        if (vItr != mLinked.end())
+        if (vItr != mLinked.end() && vItr2 != mReachableCells.end())
         {
             mLinked.erase(vItr);
+            mReachableCells.erase(vItr2);
 
             if (IsBidirectional)
             {
-                vpCell->UnLinkCell(this, false);
+                vpCell->UnLinkCell(this, DetermineReverseDrc(vLabel), false);
 
             }
         }
     }
+}
+
+//--------------------------------------------------------------------------------------------------
+//  Member Function:
+//      DetermineReverseDrc()
+//
+//  Summary:
+//      Determines the directional label for the linked cell in relation to this instance.
+//      For bidirectional linking and unlinking
+//
+//
+//  Parameters:
+//      vLabel -
+//          [in] scoped enumeration direction of the adjoining cell, the cell being linked to
+//          this instance
+//
+//  Returns:
+//      A CellLabel
+//
+//--------------------------------------------------------------------------------------------------
+//
+CellLabel
+QGraphicsCellWidget::DetermineReverseDrc(CellLabel vLabel)
+{
+    CellLabel vResult;
+
+    if (vLabel == CellLabel::NORTH)
+    {
+        vResult = CellLabel::SOUTH;
+    }
+    else if (vLabel == CellLabel::EAST)
+    {
+        vResult = CellLabel::WEST;
+    }
+    else if (vLabel == CellLabel::SOUTH)
+    {
+        vResult = CellLabel::NORTH;
+    }
+    else
+    {
+        vResult = CellLabel::EAST;
+    }
+
+    return vResult;
+
 }
