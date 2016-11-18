@@ -38,7 +38,9 @@ MainWindow::MainWindow(QWidget *parent) :
     mpContainerLayout(nullptr),
     mpTopLevelLayout(nullptr),
     mGrid(16, 16),
-    mpUi(new Ui::MazeWidget)
+    mpUi(new Ui::MazeWidget),
+    mWidth(200),
+    mHeight(200)
 
 {
     mpUi->setupUi(this);
@@ -67,7 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CreateSceneLayout();
 
     mpUi->GraphicsView->setRenderHints(QPainter::Antialiasing| QPainter::TextAntialiasing);
-    mpUi->GraphicsView->setBackgroundBrush(Qt::white);
+    //mpUi->GraphicsView->setBackgroundBrush(Qt::white);
     mpUi->GraphicsView->setScene(mpScene);
     mpUi->GraphicsView->setFrameStyle(0);
     mpUi->GraphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
@@ -99,14 +101,14 @@ MainWindow::~MainWindow()
 //
 //
 //   Returns:
-//      QSize instance set to the minimumu for the clock
+//      QSize instance
 //--------------------------------------------------------------------------------------------------
 //
-//QSize
-//MainWindow::sizeHint() const
-//{
-//    return QSize(sWidth, sHeight);
-//}
+QSize
+MainWindow::sizeHint() const
+{
+    return QSize(mWidth, mHeight);
+}
 
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
@@ -222,8 +224,6 @@ MainWindow::CreateSceneLayout()
 
     mpTopLevelLayout = new QGraphicsLinearLayout(Qt::Vertical);
     mpTopLevelLayout->addItem(mpContainerLayout);
-   // mpTopLevelLayout->setSpacing(sMargin);
-    //mpTopLevelLayout->setContentsMargins(30, 40, 30, 30);
 
     QGraphicsWidget *vpWidget = new QGraphicsWidget;
     vpWidget->setLayout(mpTopLevelLayout);
@@ -231,20 +231,17 @@ MainWindow::CreateSceneLayout()
     int width = qRound(vpWidget->preferredWidth());
     int height = qRound(vpWidget->preferredHeight());
 
-//    //- Should set the over all size of the top widget to be rectanglar
-//    //  with extra padding
-//    setMinimumSize(width + 30, height + 50);
-//    sWidth = width + 30;
-//    sHeight = height + 50;
-
-//    setGeometry(0, 0, sWidth, sHeight);
-
-
+    //- Should set the over all size of the top widget to be rectanglar
+    //  with extra padding
+    //mpUi->GraphicsView->setMinimumSize(width, height);
+    mWidth = width + (40 * 2);
+    mHeight = height + 170;
+    setMinimumSize(mWidth, mHeight);
 
     mpScene = new QGraphicsScene(this);
-    mpScene->setSceneRect(0, 0, width, height);
     mpScene->setBackgroundBrush(QColor(134, 163, 249));
     mpScene->addItem(vpWidget);
+    mpScene->setSceneRect(0, 0, width, height);
 
 }
 

@@ -54,7 +54,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    //QSize sizeHint() const Q_DECL_OVERRIDE;
+    QSize sizeHint() const Q_DECL_OVERRIDE;
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -72,6 +72,8 @@ private:
     MazeGrid               mGrid;
     QPoint                 mDragPosition;
     Ui::MazeWidget         *mpUi;
+    int                    mWidth;
+    int                    mHeight;
 
 
     void CreateActions();
