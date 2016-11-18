@@ -18,6 +18,8 @@
 #ifndef MAINWINDOW_HPP_DEFINED
 #define MAINWINDOW_HPP_DEFINED
 
+#include "ui_widget.h"
+
 #include "mz_includes.h"
 #include "maze_grid.hpp"
 
@@ -52,7 +54,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    QSize sizeHint() const Q_DECL_OVERRIDE;
+    //QSize sizeHint() const Q_DECL_OVERRIDE;
 
 protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -61,8 +63,6 @@ protected:
 
 
 private:
-
-    QGraphicsView         *mpGraphicsView;
     QGraphicsScene        *mpScene;
     QAction               *mpExitAct;
 
@@ -70,10 +70,9 @@ private:
     QGraphicsLinearLayout *mpTopLevelLayout;
 
     MazeGrid               mGrid;
+    QPoint                 mDragPosition;
+    Ui::MazeWidget         *mpUi;
 
-
-
-    QPoint     mDragPosition;
 
     void CreateActions();
     void CreateSceneLayout();

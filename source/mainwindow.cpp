@@ -20,13 +20,6 @@
 #include "qgraphics_cellwidget.hpp"
 #include "maze_creation.hpp"
 
-namespace {
-
-    unsigned int sMargin = 30;
-    unsigned int sHeight = 400;
-    unsigned int sWidth = 400;
-
-}
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
 //      MainWindow()
@@ -40,28 +33,45 @@ namespace {
 //
 MainWindow::MainWindow(QWidget *parent) :
     QWidget(parent/*, Qt::FramelessWindowHint*/),
-    mpGraphicsView(nullptr),
     mpScene(nullptr),
     mpExitAct(nullptr),
     mpContainerLayout(nullptr),
     mpTopLevelLayout(nullptr),
-    mGrid(8, 8)
+    mGrid(16, 16),
+    mpUi(new Ui::MazeWidget)
 
 {
+    mpUi->setupUi(this);
+
+    QPalette Palette(palette());
+    Palette.setColor(QPalette::Window, QColor(53,53,53));
+    Palette.setColor(QPalette::WindowText, Qt::white);
+    Palette.setColor(QPalette::Base, QColor(15,15,15));
+    Palette.setColor(QPalette::AlternateBase, QColor(53,53,53));
+    Palette.setColor(QPalette::ToolTipBase, Qt::white);
+    Palette.setColor(QPalette::ToolTipText, Qt::white);
+    //Palette.setColor(QPalette::Text, Qt::white);
+    Palette.setColor(QPalette::Button, QColor(53,53,53));
+    Palette.setColor(QPalette::ButtonText, Qt::white);
+    Palette.setColor(QPalette::BrightText, Qt::red);
+
+    Palette.setColor(QPalette::Highlight, QColor(142,45,197).lighter());
+    Palette.setColor(QPalette::HighlightedText, Qt::black);
+    Palette.setColor(QPalette::Disabled, QPalette::Text, Qt::darkGray);
+    Palette.setColor(QPalette::Disabled, QPalette::ButtonText, Qt::darkGray);
+    setPalette(Palette);
+
 
     CreateActions();
 
     CreateSceneLayout();
 
-    mpGraphicsView = new QGraphicsView(this);
-    mpGraphicsView->setRenderHints(QPainter::Antialiasing| QPainter::TextAntialiasing);
-    mpGraphicsView->setScene(mpScene);
-    mpGraphicsView->setFrameStyle(0);
-    mpGraphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    mpGraphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    mpGraphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    mpGraphicsView->show();
+    mpUi->GraphicsView->setRenderHints(QPainter::Antialiasing| QPainter::TextAntialiasing);
+    mpUi->GraphicsView->setBackgroundBrush(Qt::white);
+    mpUi->GraphicsView->setScene(mpScene);
+    mpUi->GraphicsView->setFrameStyle(0);
+    mpUi->GraphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
+    mpUi->GraphicsView->show();
 
 }
 
@@ -92,11 +102,11 @@ MainWindow::~MainWindow()
 //      QSize instance set to the minimumu for the clock
 //--------------------------------------------------------------------------------------------------
 //
-QSize
-MainWindow::sizeHint() const
-{
-    return QSize(sWidth, sHeight);
-}
+//QSize
+//MainWindow::sizeHint() const
+//{
+//    return QSize(sWidth, sHeight);
+//}
 
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
@@ -212,19 +222,24 @@ MainWindow::CreateSceneLayout()
 
     mpTopLevelLayout = new QGraphicsLinearLayout(Qt::Vertical);
     mpTopLevelLayout->addItem(mpContainerLayout);
-    mpTopLevelLayout->setSpacing(sMargin);
-    mpTopLevelLayout->setContentsMargins(30, 40, 30, 30);
+   // mpTopLevelLayout->setSpacing(sMargin);
+    //mpTopLevelLayout->setContentsMargins(30, 40, 30, 30);
 
     QGraphicsWidget *vpWidget = new QGraphicsWidget;
     vpWidget->setLayout(mpTopLevelLayout);
 
     int width = qRound(vpWidget->preferredWidth());
     int height = qRound(vpWidget->preferredHeight());
-    //int height = sViewHeight + (2 * sMargin);
-    setMinimumSize(width, height);
 
-    sWidth = width;
-    sHeight = height;
+//    //- Should set the over all size of the top widget to be rectanglar
+//    //  with extra padding
+//    setMinimumSize(width + 30, height + 50);
+//    sWidth = width + 30;
+//    sHeight = height + 50;
+
+//    setGeometry(0, 0, sWidth, sHeight);
+
+
 
     mpScene = new QGraphicsScene(this);
     mpScene->setSceneRect(0, 0, width, height);

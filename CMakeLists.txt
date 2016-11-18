@@ -15,7 +15,7 @@ set (MyProjectLib_hdr ${PROJECT_SOURCE_DIR}/include/mainwindow.hpp
 	                  ${PROJECT_SOURCE_DIR}/include/qgraphics_cellwidget.hpp)
 	                  
 
-#set (MyProjectLib_ui  ${PROJECT_SOURCE_DIR}/forms/main_window.ui)
+set (MyProjectLib_ui  ${PROJECT_SOURCE_DIR}/forms/widget.ui)
 
 set (MyProjectBin_src ${PROJECT_SOURCE_DIR}/source/main.cpp
                       ${PROJECT_SOURCE_DIR}/source/maze_grid.cpp
@@ -23,16 +23,15 @@ set (MyProjectBin_src ${PROJECT_SOURCE_DIR}/source/main.cpp
                       ${PROJECT_SOURCE_DIR}/source/binary_tree_alg.cpp)
 
 qt5_wrap_cpp (MyProjectLib_hdr_moc ${MyProjectLib_hdr})
-#qt5_wrap_ui (MyProjectLib_ui_moc  ${MyProjectLib_ui})
+qt5_wrap_ui (MyProjectLib_ui_moc  ${MyProjectLib_ui})
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories (${PROJECT_BINARY_DIR})
 
 add_library (MyProjectLib STATIC
     ${MyProjectLib_src}
-    ${MyProjectLib_hdr_moc})
-
- #${MyProjectLib_ui_moc}
+    ${MyProjectLib_hdr_moc}
+    ${MyProjectLib_ui_moc} )
 
 target_link_libraries (MyProjectLib Qt5::Widgets)
 

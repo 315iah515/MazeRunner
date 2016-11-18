@@ -77,8 +77,9 @@ QGraphicsCellWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *, 
 
     if (mLinked.empty())
     {
-        painter->drawRect(rect());
         painter->setBrush(Qt::black);
+        painter->drawRect(rect());
+
     }
     else if (mLinked.size() == 4)
     {
