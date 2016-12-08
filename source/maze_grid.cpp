@@ -92,6 +92,7 @@ MazeGrid::ConstructCells()
     catch (std::bad_alloc& excep)
     {
         std::cerr << "bad_alloc caught: " << excep.what() << '\n';
+        result = false;
     }
 
 

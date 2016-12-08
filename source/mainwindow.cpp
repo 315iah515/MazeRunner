@@ -12,13 +12,13 @@
 //
 //==================================================================================================
 //
-#include <QtWidgets>
+
 
 #include <QtDebug>
 
 #include "mainwindow.hpp"
 #include "qgraphics_cellwidget.hpp"
-#include "maze_creation.hpp"
+
 
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
@@ -40,7 +40,9 @@ MainWindow::MainWindow(QWidget *parent) :
     mGrid(16, 16),
     mpUi(new Ui::MazeWidget),
     mWidth(200),
-    mHeight(200)
+    mHeight(200),
+    mpAlgorithm(AlgorithmFactory(CreationAlgorithm::BINARY_TREE)),
+    mpWidget(nullptr)
 
 {
     mpUi->setupUi(this);
@@ -65,15 +67,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     CreateActions();
-
     CreateSceneLayout();
 
     mpUi->GraphicsView->setRenderHints(QPainter::Antialiasing| QPainter::TextAntialiasing);
-    //mpUi->GraphicsView->setBackgroundBrush(Qt::white);
+    mpUi->GraphicsView->setBackgroundBrush(Qt::white);
     mpUi->GraphicsView->setScene(mpScene);
     mpUi->GraphicsView->setFrameStyle(0);
     mpUi->GraphicsView->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     mpUi->GraphicsView->show();
+
+    CreateConnections();
 
 }
 
@@ -108,6 +111,84 @@ QSize
 MainWindow::sizeHint() const
 {
     return QSize(mWidth, mHeight);
+}
+
+//--------------------------------------------------------------------------------------------------
+//  Member Function:
+//      CreationAlgrthmSelected()
+//
+//  Summary:
+//      Assigns a new instance of the maze creation algorithm pointer to the unique pointer
+//      attribute. Slot method
+//
+//   Parameters:
+//      index -
+//          [in] corresponds to the index of the displayed text within the combo box
+//
+//--------------------------------------------------------------------------------------------------
+//
+void
+MainWindow::CreationAlgrthmSelected(int index)
+{
+    switch (index)
+    {
+    case 0 : mpAlgorithm = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
+        break;
+
+      default: mpAlgorithm = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
+
+    }
+
+}
+
+//--------------------------------------------------------------------------------------------------
+//  Member Function:
+//      BuildMaze()
+//
+//  Summary:
+//      Runs the maze construction algorithm and then creates the QGraphics scene. Slot method
+//
+//
+//--------------------------------------------------------------------------------------------------
+//
+void
+MainWindow::BuildMaze()
+{
+
+    //- Clearing the scene will delete all contents, deallocate the layouts
+    mpScene->clear();
+    mGrid.Clear();
+
+    mpContainerLayout = new QGraphicsGridLayout;
+    mpContainerLayout->setVerticalSpacing(0.0);
+    mpContainerLayout->setHorizontalSpacing(0.0);
+    CreationAlgorithmPtr CreationPtr = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
+    mpAlgorithm->Build(mGrid);
+
+    // row , column
+
+    for (int i = 0; i < mGrid.Rows(); ++i)
+    {
+        for (int j = 0; j < mGrid.Columns(); ++j)
+        {
+            mpContainerLayout->addItem(mGrid.RetrieveCell(i, j), i, j);
+        }
+    }
+
+    mpTopLevelLayout = new QGraphicsLinearLayout(Qt::Vertical);
+    mpTopLevelLayout->addItem(mpContainerLayout);
+
+    mpWidget = new QGraphicsWidget;
+    mpWidget->setLayout(mpTopLevelLayout);
+    int width = qRound(mpWidget->preferredWidth());
+    int height = qRound(mpWidget->preferredHeight());
+
+    mWidth = width + (40 * 2);
+    mHeight = height + 170;
+    setMinimumSize(mWidth, mHeight);
+    mpScene->addItem(mpWidget);
+    mpScene->setSceneRect(0, 0, width, height);
+
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -173,7 +254,6 @@ MainWindow::CreateActions()
     mpExitAct = new QAction(tr("E&xit"), this);
     mpExitAct->setShortcut(tr("Ctrl+Q"));
     mpExitAct->setStatusTip(tr("Exit the application"));
-    connect(mpExitAct, &QAction::triggered, this, &QWidget::close);
     addAction(mpExitAct);
 
 }
@@ -205,31 +285,17 @@ MainWindow::CreateSceneLayout()
 {
 
     mpContainerLayout = new QGraphicsGridLayout;
-
     mpContainerLayout->setVerticalSpacing(0.0);
     mpContainerLayout->setHorizontalSpacing(0.0);
-
-    CreationAlgorithmPtr CreationPtr = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
-    CreationPtr->Build(mGrid);
-
-    // row , column
-
-    for (int i = 0; i < mGrid.Rows(); ++i)
-    {
-        for (int j = 0; j < mGrid.Columns(); ++j)
-        {
-            mpContainerLayout->addItem(mGrid.RetrieveCell(i, j), i, j);
-        }
-    }
 
     mpTopLevelLayout = new QGraphicsLinearLayout(Qt::Vertical);
     mpTopLevelLayout->addItem(mpContainerLayout);
 
-    QGraphicsWidget *vpWidget = new QGraphicsWidget;
-    vpWidget->setLayout(mpTopLevelLayout);
+    mpWidget = new QGraphicsWidget;
+    mpWidget->setLayout(mpTopLevelLayout);
 
-    int width = qRound(vpWidget->preferredWidth());
-    int height = qRound(vpWidget->preferredHeight());
+    int width = qRound(mpWidget->preferredWidth());
+    int height = qRound(mpWidget->preferredHeight());
 
     //- Should set the over all size of the top widget to be rectanglar
     //  with extra padding
@@ -240,8 +306,31 @@ MainWindow::CreateSceneLayout()
 
     mpScene = new QGraphicsScene(this);
     mpScene->setBackgroundBrush(QColor(134, 163, 249));
-    mpScene->addItem(vpWidget);
+    mpScene->addItem(mpWidget);
     mpScene->setSceneRect(0, 0, width, height);
 
 }
 
+//--------------------------------------------------------------------------------------------------
+//  Member Function:
+//      CreateConnections()
+//
+//  Summary:
+//      Utility method to perform all signal and slot connections in the proper sequence.
+//
+//
+//  Remarks:
+//      Be sure this gets invoked after all UI attributes are allocated
+//
+//
+//--------------------------------------------------------------------------------------------------
+//
+void
+MainWindow::CreateConnections()
+{
+    connect(mpExitAct, &QAction::triggered, this, &QWidget::close);
+    connect(mpUi->AlgorithmCB, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, &MainWindow::CreationAlgrthmSelected);
+
+    connect(mpUi->CreatePB, &QPushButton::pressed, this, &MainWindow::BuildMaze);
+}

@@ -18,18 +18,14 @@
 #ifndef MAINWINDOW_HPP_DEFINED
 #define MAINWINDOW_HPP_DEFINED
 
+#include <QtWidgets>
+
 #include "ui_widget.h"
 
 #include "mz_includes.h"
 #include "maze_grid.hpp"
+#include "maze_creation.hpp"
 
-
-class QAction;
-class QGraphicsView;
-class QGraphicsScene;
-class QGraphicsCellWidget;
-class QGraphicsLinearLayout;
-class QGraphicsGridLayout;
 
 //--------------------------------------------------------------------------------------------------
 //  Class:
@@ -56,6 +52,11 @@ public:
 
     QSize sizeHint() const Q_DECL_OVERRIDE;
 
+    void CreationAlgrthmSelected(int index);
+    void BuildMaze();
+
+
+
 protected:
     void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
     void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
@@ -74,10 +75,13 @@ private:
     Ui::MazeWidget         *mpUi;
     int                    mWidth;
     int                    mHeight;
+    CreationAlgorithmPtr   mpAlgorithm;
+    QGraphicsWidget       *mpWidget;
 
 
     void CreateActions();
     void CreateSceneLayout();
+    void CreateConnections();
 
 };
 

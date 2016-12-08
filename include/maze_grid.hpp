@@ -44,6 +44,7 @@ public:
     bool     ClearAndConstructNewDiem(std::uint16_t vRows, std::uint16_t vColumns);
     CellPtr  RetrieveCell(std::uint16_t vRow, std::uint16_t vColumn);
     CellPtr  RandomCell();
+    void     Clear();
 
     std::uint16_t Rows() const;
     std::uint16_t Columns() const;
@@ -61,7 +62,7 @@ private:
     std::mt19937  mMt;
     std::uniform_real_distribution<double> mDist;
 
-    void Clear();
+
     void ConfigureCellNeighbors();
 };
 
