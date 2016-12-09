@@ -22,6 +22,7 @@
 #include <functional>
 #include <iostream>
 #include <random>
+#include <iterator>
 
 #include <boost/multi_array.hpp>
 

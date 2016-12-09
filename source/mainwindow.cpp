@@ -135,6 +135,9 @@ MainWindow::CreationAlgrthmSelected(int index)
     case 0 : mpAlgorithm = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
         break;
 
+    case 1 : mpAlgorithm = AlgorithmFactory(CreationAlgorithm::SIDEWINDER);
+        break;
+
       default: mpAlgorithm = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
 
     }

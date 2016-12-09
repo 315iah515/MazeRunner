@@ -143,6 +143,11 @@
            <string>Binary Tree</string>
           </property>
          </item>
+         <item>
+          <property name="text">
+           <string>Side Winder</string>
+          </property>
+         </item>
         </widget>
        </item>
        <item>
@@ -227,21 +232,9 @@
     </spacer>
    </item>
   </layout>
-  <zorder>AlgorithmCB</zorder>
-  <zorder>CreatePB</zorder>
-  <zorder>QuitPB</zorder>
-  <zorder>verticalLayoutWidget</zorder>
-  <zorder>horizontalSpacer</zorder>
-  <zorder>horizontalSpacer_2</zorder>
-  <zorder>gridLayoutWidget</zorder>
-  <zorder>verticalSpacer</zorder>
-  <zorder>verticalSpacer_2</zorder>
-  <zorder>horizontalSpacer_3</zorder>
-  <zorder>horizontalSpacer_4</zorder>
   <zorder>verticalSpacer_3</zorder>
   <zorder>horizontalSpacer_5</zorder>
   <zorder>horizontalSpacer_6</zorder>
-  <zorder>GraphicsView</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>
