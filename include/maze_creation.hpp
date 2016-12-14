@@ -54,15 +54,6 @@ class MazeCreationBehavior
         virtual void Build(MazeGrid& vGrid) const = 0;
 };
 
-//--------------------------------------------------------------------------------------------------
-// Stub class
-//--------------------------------------------------------------------------------------------------
-class TestC : public MazeCreationBehavior
-{
-public:
-    void Build(MazeGrid& vGrid) const {}
-
-};
 
 using CreationAlgorithmPtr =  std::unique_ptr<MazeCreationBehavior>;
 
@@ -70,5 +61,54 @@ using CreationAlgorithmPtr =  std::unique_ptr<MazeCreationBehavior>;
 CreationAlgorithmPtr
 AlgorithmFactory(CreationAlgorithm vType);
 
+//--------------------------------------------------------------------------------------------------
+//  Class:
+//      SideWinder
+//
+//  Summary:
+//     Creates a maze by randomly creating passages to the north, west and east of each cell.
+//
+//
+//  Remarks:
+//
+//
+//--------------------------------------------------------------------------------------------------
+//
+class SideWinder : public MazeCreationBehavior
+{
+public:
+    void Build(MazeGrid& vGrid) const;
 
-#endif
+private:
+    friend CreationAlgorithmPtr AlgorithmFactory(CreationAlgorithm vType);
+    SideWinder();
+
+
+};
+
+//--------------------------------------------------------------------------------------------------
+//  Class:
+//      BinaryTree
+//
+//  Summary:
+//     Creates a maze by randomly creating passages to the north or east of each cell.
+//
+//
+//  Remarks:
+//
+//
+//--------------------------------------------------------------------------------------------------
+//
+class BinaryTree : public MazeCreationBehavior
+{
+public:
+    void Build(MazeGrid& vGrid) const;
+
+private:
+    friend CreationAlgorithmPtr AlgorithmFactory(CreationAlgorithm vType);
+    BinaryTree();
+
+};
+
+
+#endif //- MAZE_CREATION_HPP_DEFINED

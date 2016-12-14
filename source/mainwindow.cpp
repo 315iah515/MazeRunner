@@ -160,12 +160,11 @@ MainWindow::BuildMaze()
 
     //- Clearing the scene will delete all contents, deallocate the layouts
     mpScene->clear();
-    mGrid.Clear();
+    //mGrid.Clear();
 
     mpContainerLayout = new QGraphicsGridLayout;
     mpContainerLayout->setVerticalSpacing(0.0);
     mpContainerLayout->setHorizontalSpacing(0.0);
-    CreationAlgorithmPtr CreationPtr = AlgorithmFactory(CreationAlgorithm::BINARY_TREE);
     mpAlgorithm->Build(mGrid);
 
     // row , column

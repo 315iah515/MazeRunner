@@ -14,8 +14,7 @@
 #ifndef SIDEWINDER_ALG_HPP_DEFINED
 #define SIDEWINDER_ALG_HPP_DEFINED
 
-#include "maze_creation.hpp"
-
+//#include "maze_creation.hpp"
 
 //--------------------------------------------------------------------------------------------------
 //  Class:

@@ -11,8 +11,9 @@
 //
 //==================================================================================================
 //
-#include "sidewinder_alg.hpp"
+#include "maze_creation.hpp"
 #include "algorithm_utilities.hpp"
+
 
 //--------------------------------------------------------------------------------------------------
 //  Member Function:
@@ -62,6 +63,7 @@ SideWinder::Build(MazeGrid &vGrid) const
     std::uniform_int_distribution<int> vDi(0, 1);
     bool vAtEasternBoundry = false;
     bool vAtNorthernBoundry = false;
+    int random = 1;
 
     for (size_t i = 0; i < vRows; ++i)
     {
@@ -71,23 +73,24 @@ SideWinder::Build(MazeGrid &vGrid) const
             vRowData.push_back(vPtr);
             vAtEasternBoundry = (j == vColumns - 1);
             vAtNorthernBoundry = (i == 0);
-            int random = vDi(vDre);
+            random = vDi(vDre);
 
-            bool vCloseOut = vAtEasternBoundry || (!vAtNorthernBoundry && random == 0);
+            bool vCloseOut = vAtEasternBoundry || random == 0;
 
-            if (vCloseOut)
+            if (vCloseOut && !vAtNorthernBoundry)
             {
                 auto vItr = SelectRandomly(vRowData.begin(), vRowData.end());
                 (*vItr)->LinkCell(vGrid.RetrieveCell(i - 1, j), CellLabel::NORTH);
                 vRowData.clear();
             }
-            else
+            else if (!vAtEasternBoundry)
             {
                 vPtr->LinkCell(vGrid.RetrieveCell(i, j + 1), CellLabel::EAST);
             }
         }
 
-    }
+        vRowData.clear();
 
+    }
 
 }

@@ -12,8 +12,7 @@
 //==================================================================================================
 //
 
-#include "binary_tree_alg.hpp"
-
+#include "maze_creation.hpp"
 
 
 //--------------------------------------------------------------------------------------------------
@@ -45,9 +44,9 @@ AlgorithmFactory(CreationAlgorithm vType)
     {
         return std::unique_ptr<MazeCreationBehavior>(new BinaryTree);
     }
-    else
+    else if (vType == CreationAlgorithm::SIDEWINDER)
     {
-        return std::unique_ptr<MazeCreationBehavior>(new TestC);
+        return std::unique_ptr<MazeCreationBehavior>(new SideWinder);
     }
 
 }
