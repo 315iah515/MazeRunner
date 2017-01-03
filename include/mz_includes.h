@@ -27,6 +27,7 @@
 #include <boost/multi_array.hpp>
 
 #include <QWidget>
+#include <QtDebug>
 
 
 

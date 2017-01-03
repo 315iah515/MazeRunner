@@ -79,6 +79,7 @@ MazeGrid::ConstructCells()
 
     try
     {
+        qDebug("Constructing maze cells...");
         for (std::uint16_t i = 0; i < mRows; ++i)
         {
             for(std::uint16_t j = 0; j < mColumns; ++j)
@@ -191,6 +192,7 @@ MazeGrid::RandomCell()
 void
 MazeGrid::Clear()
 {
+    qDebug("Clearing maze cells!");
     for (std::uint16_t i = 0; i < mRows; ++i)
     {
         for(std::uint16_t j = 0; j < mColumns; ++j)
@@ -215,6 +217,7 @@ MazeGrid::Clear()
 void
 MazeGrid::ConfigureCellNeighbors()
 {
+    qDebug("Configuring cells neighbors...");
     for (std::uint16_t row = 0; row < mRows; ++row)
     {
         for(std::uint16_t column = 0; column < mColumns; ++column)

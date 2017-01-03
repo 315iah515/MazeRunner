@@ -72,6 +72,7 @@ QGraphicsCellWidget::QGraphicsCellWidget(unsigned int row, unsigned int column)
 void
 QGraphicsCellWidget::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
+    qDebug("Painting cell column %d, row %d ...", mColumn, mRow);
     QBrush brush = painter->brush();
     painter->setBrush(mFillColor);
 

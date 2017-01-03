@@ -54,18 +54,20 @@ SideWinder::SideWinder()
 void
 SideWinder::Build(MazeGrid &vGrid) const
 {
+
     vGrid.ConstructCells();
-    size_t vRows = vGrid.Rows();
+    size_t vRows = vGrid.Rows() - 1;
     size_t vColumns = vGrid.Columns();
     std::vector<MazeGrid::CellPtr> vRowData;
 
+    qDebug("Building maze using sidewinder algorithm...");
     std::default_random_engine vDre;
     std::uniform_int_distribution<int> vDi(0, 1);
     bool vAtEasternBoundry = false;
     bool vAtNorthernBoundry = false;
     int random = 1;
 
-    for (size_t i = 0; i < vRows; ++i)
+    for (size_t i = vRows; i >= 1; --i)
     {
         for(size_t j = 0; j < vColumns; ++j)
         {
